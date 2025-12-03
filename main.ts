@@ -2,6 +2,7 @@ let Chrono = 0
 let HorodateurFin = 0
 let HorodateurDebut = 0
 let NumEtape = 0
+let idcarte = 0
 let depart = 0
 led.enable(true)
 let TempsDecompte = 10
@@ -10,11 +11,31 @@ lcd1602.I2C_ADDR.addr1
 )
 lcd1602.clear()
 serial.writeValue("numEtape", NumEtape)
+MFRC522.Init()
+lcd1602.putString(
+"voiture ligne",
+0,
+0
+)
+lcd1602.putString(
+"Scan identite",
+0,
+1
+)
 basic.forever(function () {
     if (NumEtape == 0) {
         basic.clearScreen()
         TempsDecompte = 5
-        if (true) {
+        idcarte = MFRC522.getID()
+        if (idcarte != 0) {
+            lcd1602.putNumber(
+            idcarte,
+            0,
+            1
+            )
+            basic.pause(5000)
+        }
+        if (idcarte != 0) {
             NumEtape = 1
             serial.writeValue("numEtape", NumEtape)
             basic.showIcon(IconNames.Yes)
@@ -81,8 +102,8 @@ basic.forever(function () {
     }
     if (NumEtape == 3) {
         TempsDecompte += 1
-        serial.writeValue("p3", pins.analogReadPin(AnalogReadWritePin.P3))
-        if (pins.analogReadPin(AnalogReadWritePin.P3) < 200) {
+        serial.writeValue("p3", pins.analogReadPin(AnalogReadWritePin.P0))
+        if (pins.analogReadPin(AnalogReadWritePin.P0) < 200) {
             lcd1602.clear()
             lcd1602.putString(
             "WIN1",
@@ -121,6 +142,17 @@ basic.forever(function () {
         if (true) {
             NumEtape = 0
             serial.writeValue("numEtape", NumEtape)
+            lcd1602.clear()
+            lcd1602.putString(
+            "voiture ligne",
+            0,
+            0
+            )
+            lcd1602.putString(
+            "Scan identite",
+            0,
+            1
+            )
         }
     }
 })

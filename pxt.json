@@ -5,7 +5,8 @@
         "core": "*",
         "radio": "*",
         "microphone": "*",
-        "LCD1602-Test2": "pkg:LCD1602-Test2.json"
+        "LCD1602-Test2": "pkg:LCD1602-Test2.json",
+        "pxt-mfrc522": "github:joy-it/pxt-rfid-mfrc522#1.0.1"
     },
     "files": [
         "main.blocks",
