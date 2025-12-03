@@ -3,6 +3,7 @@ let HorodateurDebut = 0
 led.enable(true)
 let NumEtape = 0
 let TempsDecompte = 10
+let depart = 0
 lcd1602.setAddress(
 lcd1602.I2C_ADDR.addr1
 )
@@ -22,7 +23,7 @@ basic.forever(function () {
             0
             )
             lcd1602.putString(
-            "bout. A demarrer",
+            "bt.Sens. demarrer",
             0,
             1
             )
@@ -30,7 +31,7 @@ basic.forever(function () {
     }
     if (NumEtape == 1) {
         TempsDecompte = 5
-        if (input.buttonIsPressed(Button.A)) {
+        if (input.logoIsPressed()) {
             NumEtape = 2
             lcd1602.clear()
             lcd1602.putString(
