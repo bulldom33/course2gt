@@ -11,7 +11,8 @@
         "main.blocks",
         "main.ts",
         "README.md",
-        "LCD1602-Test2.json"
+        "LCD1602-Test2.json",
+        "main.py"
     ],
     "testFiles": [
         "test.ts"

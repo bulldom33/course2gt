@@ -1,20 +1,22 @@
+let Chrono = 0
 let HorodateurFin = 0
 let HorodateurDebut = 0
-led.enable(true)
 let NumEtape = 0
-let TempsDecompte = 10
 let depart = 0
+led.enable(true)
+let TempsDecompte = 10
 lcd1602.setAddress(
 lcd1602.I2C_ADDR.addr1
 )
 lcd1602.clear()
-let Chrono = 0
+serial.writeValue("numEtape", NumEtape)
 basic.forever(function () {
     if (NumEtape == 0) {
         basic.clearScreen()
         TempsDecompte = 5
         if (true) {
             NumEtape = 1
+            serial.writeValue("numEtape", NumEtape)
             basic.showIcon(IconNames.Yes)
             lcd1602.clear()
             lcd1602.putString(
@@ -33,6 +35,7 @@ basic.forever(function () {
         TempsDecompte = 5
         if (input.logoIsPressed()) {
             NumEtape = 2
+            serial.writeValue("numEtape", NumEtape)
             lcd1602.clear()
             lcd1602.putString(
             "Pilotes",
@@ -52,6 +55,7 @@ basic.forever(function () {
         TempsDecompte += -1
         if (TempsDecompte == 0) {
             NumEtape = 3
+            serial.writeValue("numEtape", NumEtape)
             lcd1602.clear()
             lcd1602.putString(
             "GO",
@@ -71,13 +75,14 @@ basic.forever(function () {
                 # . # . #
                 . . # . .
                 `)
-            HorodateurDebut = control.eventTimestamp()
+            HorodateurDebut = control.millis()
             serial.writeValue("debut", HorodateurDebut)
         }
     }
     if (NumEtape == 3) {
         TempsDecompte += 1
-        if (pins.digitalReadPin(DigitalPin.P0) > 0) {
+        serial.writeValue("p3", pins.analogReadPin(AnalogReadWritePin.P3))
+        if (pins.analogReadPin(AnalogReadWritePin.P3) < 200) {
             lcd1602.clear()
             lcd1602.putString(
             "WIN1",
@@ -91,13 +96,15 @@ basic.forever(function () {
                 . . # . .
                 . . # . .
                 `)
-            HorodateurFin = control.eventTimestamp()
+            HorodateurFin = control.millis()
             serial.writeValue("Fin", HorodateurFin)
+            serial.writeValue("debut", HorodateurDebut)
             NumEtape = 4
+            serial.writeValue("numEtape", NumEtape)
         }
     }
     if (NumEtape == 4) {
-        Chrono = (HorodateurFin - HorodateurDebut) / 1000
+        Chrono = (HorodateurFin - HorodateurDebut) / 1
         lcd1602.set_backlight(lcd1602.on_off.on)
         lcd1602.putNumber(
         Chrono,
@@ -113,6 +120,7 @@ basic.forever(function () {
         basic.pause(10000)
         if (true) {
             NumEtape = 0
+            serial.writeValue("numEtape", NumEtape)
         }
     }
 })
