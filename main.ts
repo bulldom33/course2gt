@@ -28,10 +28,17 @@ basic.forever(function () {
         TempsDecompte = 5
         idcarte = MFRC522.getID()
         if (idcarte != 0) {
+            let data = ""
+            basic.pause(2000)
             lcd1602.putNumber(
             idcarte,
             0,
             1
+            )
+            lcd1602.putString(
+            data,
+            0,
+            0
             )
             basic.pause(5000)
         }
